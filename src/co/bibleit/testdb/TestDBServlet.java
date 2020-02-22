@@ -1,6 +1,9 @@
 package co.bibleit.testdb;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.*;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,8 +21,33 @@ public class TestDBServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		// setup connection variables
+		String user = "root";
+		String password = "2Qepxniw";
+		
+		String jdbcUrl = "jdbc:mysql://localhost:3306/bible_it?useSSL=false&amp";
+		String driver = "com.mysql.jdbc.Driver";
+		
+		// get connection
+		try {
+			
+			PrintWriter out = response.getWriter();
+			
+			out.println("Connection to database " + jdbcUrl);
+			
+			Class.forName(driver);
+			
+			
+			Connection myConn = DriverManager.getConnection(jdbcUrl, user, password);
+			
+			out.println("\nCONNECTION SUCCESSFUL");
+			
+			myConn.close();
+		}
+		catch(Exception exc) {
+			exc.printStackTrace();
+			throw new ServletException(exc);
+		}
 	}
 
 }
